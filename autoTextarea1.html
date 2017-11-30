@@ -1,0 +1,203 @@
+<meta charset="utf-8">
+<textarea name="" id="idAuto" onkeyup="autoMu(this);" cols="30" rows="10"></textarea>
+<textarea name="" id="idEvallenecek" onkeyup=";" cols="30" rows="10"></textarea>
+<button onclick="evalle('idEvallenecek');">evalle</button>
+<hr>
+ilk sayı ascii için girin, (virgülle değişik sayılar girebilirsiniz):<input type="text" id="idAsciBaslangic" value="0"><br>
+ikinci sayı ascii için:<input type="text" id="idAsciBitis" value="256" ><br>
+<hr>
+<button onclick="asciGosterSayiHarf();">Sayi Harf</button>
+<button onclick="asciGosterHarfSayi();">Harf Sayi</button>
+<hr>
+<textarea name="" id="idTaAsciler" cols="30" rows="10"></textarea>
+<div id="idDivAsciler" style="width:40%;height:40%;border:1px solid green;float:left;"></div>
+var s = 'A';
+console.log(s.charCodeAt(0));
+To convert an ASCII value to its corresponding character use the fromCharCode static method of the String JavaScript object.
+Example:
+console.log(String.fromCharCode(65));
+
+
+<script>
+function asciGosterSayiHarf(idAsciBaslaDizi,idAsciBitis,idNerede1Value,idNerede2InnerHTML){
+	idAsciBaslaDizi=idAsciBaslaDizi?idAsciBaslaDizi:"idAsciBaslangic";
+	idAsciBitis=idAsciBitis?idAsciBitis:"idAsciBitis";
+	idNerede1Value=idNerede1Value?idNerede1Value:"idTaAsciler";
+	idNerede2InnerHTML=idNerede2InnerHTML?idNerede2InnerHTML:"idDivAsciler";
+	console.log("idAsciBaslaDizi:"+idAsciBaslaDizi+" , idAsciBitis:"+idAsciBitis+" , idNerede1Value:"+idNerede1Value+" , idNerede2InnerHTML:"+idNerede2InnerHTML);
+	idAsciBaslaDizi=document.getElementById(idAsciBaslaDizi).value.split(",");
+	console.log(idAsciBaslaDizi);
+	idAsciBitis=document.getElementById(idAsciBitis).value;
+	if(idAsciBaslaDizi.length==1){
+	var x1=idAsciBaslaDizi[0];
+	var x2=parseInt(idAsciBitis);
+		for(var x=x1;x<x2;x++){
+			document.getElementById(idNerede1Value).value+=x+" - :"+String.fromCharCode(x)+"\n";
+			document.getElementById(idNerede2InnerHTML).innerHTML+=x+" - :"+String.fromCharCode(x)+"<br>";
+		}
+	
+	}
+}
+/*
+String.fromCharCode(n1, n2, ..., nX);
+var res = String.fromCharCode(72, 69, 76, 76, 79);
+HELLO
+
+var res = String.fromCharCode(65);
+The result of res will be:
+A
+
+*/
+function evalle(id){
+	eval(document.getElementById(id).value);
+}
+function br2nl(str) {
+    return str.replace(/<br\s*\/?>/mg,"\n\t::___ntaaaa");
+}
+function autoMu(bu){
+var patt1 = /\n/;
+    var result = (bu.value).search(patt1);
+	console.log("result");
+	console.log(result);
+	//bu.value=bu.value.split(\n).join("");
+	bu.value=bu.value.replace(/\n/g, "<br />");
+	setTimeout(function(){alert(999);bu.value=br2nl(bu.value);},5000);
+	
+	
+	//document.getElementById('x').value.replace(/\n/g, "<br />");
+	console.log(bu.scrollTop);
+		console.log(bu.scrollLeft);
+		var position = document.getSelection().baseNode.parentNode.getBoundingClientRect()
+        console.log("position");
+        console.log(position);
+	var metin=bu.value;
+	//console.log("---------metin:"+metin);
+	
+	var cursorIndex=bu.selectionStart;
+	console.log("cursorIndex:"+cursorIndex);
+	var curserdanOncekiler=metin.substring(0,cursorIndex);
+	var curserdanSonrakiler=metin.substring(cursorIndex);
+	//console.log(curserdanOncekiler+"  -  "+curserdanSonrakiler);
+	//var curserdanOncekilerdeIsaretlerVarsaIndexi=curserdanOncekiler.lastIndexOf(" "|".");
+	var isaretIndexleri={};
+	/*
+	//var curserdanOnceki_Index_Bosluk=curserdanOncekiler.lastIndexOf(" ");
+	isaretIndexleri.curserdanOnceki_Index_Bosluk=(curserdanOncekiler.lastIndexOf(" ")>-1)?curserdanOncekiler.lastIndexOf(" "):99999;
+	console.log(isaretIndexleri.curserdanOnceki_Index_Bosluk);
+	
+	isaretIndexleri.curserdanOnceki_Index_Nokta=(curserdanOncekiler.lastIndexOf(".")>-1)?curserdanOncekiler.lastIndexOf(" "):99999;
+	console.log(isaretIndexleri.curserdanOnceki_Index_Nokta);
+	
+	isaretIndexleri.curserdanOnceki_Index_Virgul=(curserdanOncekiler.lastIndexOf(",")>-1)?curserdanOncekiler.lastIndexOf(" "):99999;
+	console.log(isaretIndexleri.curserdanOnceki_Index_Virgul);
+	
+	isaretIndexleri.curserdanOnceki_Index_Ikinokta=(curserdanOncekiler.lastIndexOf(":"))>-1?curserdanOncekiler.lastIndexOf(" "):99999;
+	console.log(isaretIndexleri.curserdanOnceki_Index_Ikinokta);
+	
+	isaretIndexleri.curserdanOnceki_Index_NoktaliVirgul=(curserdanOncekiler.lastIndexOf(";"))>-1?curserdanOncekiler.lastIndexOf(" "):99999;
+	*/
+	//console.log(isaretIndexleri.curserdanOnceki_Index_NoktaliVirgul);
+	var isaretler={"bos":" ","nokta":".","virgul":",","ikinoktau":":","noktalivirgul":";","suslusol":"{","suslusag":"}","koselisol":"[","koselisag":"]","parantezsol":"(","parantezssag":")","esittir":"="};
+	var varOlanIsaretler=[];
+	var varOlanIsaretlerCursoraYakinligi=[];
+	for(x in isaretler){
+		if(curserdanOncekiler.lastIndexOf(isaretler[x])>-1){
+/*		console.log("curserdanOncekiler.lastIndexOf(isaretler[x])>-1");
+		console.log("x:"+x+" isaretler[x]: "+isaretler[x]);
+		console.log("curserdanOncekiler.lastIndexOf(isaretler[x]):"+curserdanOncekiler.lastIndexOf(isaretler[x]));
+	*/
+		varOlanIsaretler[x]=curserdanOncekiler.lastIndexOf(isaretler[x]);
+		varOlanIsaretlerCursoraYakinligi[x]=cursorIndex-curserdanOncekiler.lastIndexOf(isaretler[x]);
+		}
+		}
+	/*	console.log(isaretler);
+		console.log(varOlanIsaretler);
+		console.log(varOlanIsaretlerCursoraYakinligi);
+*/
+	//console.log(sirala(varOlanIsaretler,"value"));
+	var cursoraEnYakinIsaret=sirala(varOlanIsaretlerCursoraYakinligi,"value");
+	var cursoraEnYakinIsaretIndexi=varOlanIsaretler[cursoraEnYakinIsaret];
+	console.log("en yakın:"+cursoraEnYakinIsaret+"  , cursoraEnYakinIsaretIndexi:"+cursoraEnYakinIsaretIndexi);
+	console.log("cursora en yakın işarete kadar olan ifade:"+curserdanOncekiler.substring(cursoraEnYakinIsaretIndexi+1,cursorIndex));
+/*	
+	var homes = [
+    {
+        "h_id": "3",
+        "city": "Dallas",
+        "state": "TX",
+        "zip": "75201",
+        "price": "16250099"
+    }, {
+        "h_id": "4",
+        "city": "Bevery Hills",
+        "state": "CA",
+        "zip": "90210",
+        "price": "319250"
+    }, {
+        "h_id": "5",
+        "city": "New York",
+        "state": "NY",
+        "zip": "00010",
+        "price": "962500"
+    }
+];
+console.log("<pre>"+JSON.stringify(homes));
+console.log(homes);
+document.getElementById("preli").innerHTML="<pre>"+JSON.stringify(homes)+"</pre>";
+document.getElementById("preli").innerHTML=JSON.stringify(homes);
+	homes.sort(function(a, b) {
+    return parseFloat(a.price) - parseFloat(b.price);
+});
+console.log(homes);	
+//document.getElementById("preli").innerHTML+="<pre>"+JSON.stringify(homes)+"</pre>";	
+document.getElementById("preli").innerHTML+=JSON.stringify(homes);	
+
+var adanaObjesi={
+"s":3,
+"e":1,
+"a":9
+}
+var list = {"you": 100, "me": 75, "foo": 116, "bar": 15};
+keysSorted = Object.keys(adanaObjesi).sort(function(a,b){return adanaObjesi[a]-adanaObjesi[b]});
+alert(keysSorted+JSON.stringify(keysSorted));     // bar,me,you,foo
+sirala(adanaObjesi,"value");
+ sirala(adanaObjesi,"key");
+*/ 
+}
+
+function sirala(adanaObjesi,keyMivalueMi){
+if(keyMivalueMi=="value"){
+ keysSorted=Object.keys(adanaObjesi).sort(function(a,b){return (parseInt(adanaObjesi[a])-parseInt(adanaObjesi[b]));});
+ console.log(keysSorted[0]);
+}else{
+keysSorted=Object.keys(adanaObjesi).sort(function(a,b){
+//return a-b;
+a=a.toLowerCase();
+//console.log(a);
+ b=b.toLowerCase();
+//console.log(b);
+ if (a < b){ //sort string ascending
+ //console.log("a<b");
+        return -1;		} 
+    if (a > b){
+//console.log("a>b"); 
+ return 1;		};   });
+}
+ //alert(JSON.stringify(adanaObjesi)+" iste bu: "+keysSorted+JSON.stringify(keysSorted)+" :"+keysSorted[0]+"="+adanaObjesi[keysSorted[0]]);
+ //console.log(JSON.stringify(adanaObjesi)+" iste bu : "+keysSorted+JSON.stringify(keysSorted)+" :"+keysSorted[0]+"="+adanaObjesi[keysSorted[0]]);
+ //console.log(keysSorted[0]);
+ //console.log(keysSorted);
+ return keysSorted[0];
+}
+var adanaObjesi={
+"s":"3",
+"e":"1",
+"a":"9"
+}
+//sirala(adanaObjesi,"value");
+//console.log(sirala(adanaObjesi,"value"));
+//sirala(adanaObjesi,"key");
+//console.log(sirala(adanaObjesi,"key"));
+
+</script>
+<div id="preli" style="word-wrap:break-word;overflow-y:auto;width:100%;height:50%;"></div>
